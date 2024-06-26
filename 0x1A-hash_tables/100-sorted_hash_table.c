@@ -1,27 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include "hash_tables.h"
-
-/* djb2 hash function */
-unsigned long int hash_djb2(const unsigned char *str)
-{
-    unsigned long int hash = 5381;
-    int c;
-
-    while ((c = *str++))
-    {
-        hash = ((hash << 5) + hash) + c;
-    }
-
-    return hash;
-}
-
-/* Get the index of a key */
-unsigned long int key_index(const unsigned char *key, unsigned long int size)
-{
-    return hash_djb2(key) % size;
-}
 
 /* Create a sorted hash table */
 shash_table_t *shash_table_create(unsigned long int size)
@@ -189,11 +166,12 @@ void shash_table_print_rev(const shash_table_t *ht)
 void shash_table_delete(shash_table_t *ht)
 {
     shash_node_t *node, *temp;
+    unsigned long int i;
 
     if (ht == NULL)
         return;
 
-    for (unsigned long int i = 0; i < ht->size; i++)
+    for (i = 0; i < ht->size; i++)
     {
         node = ht->array[i];
         while (node != NULL)
